@@ -72,8 +72,6 @@ Here is an example of the same grayscaled traffic sign image, first with CLAHE a
 
 ![alt text][image3]
 
-I did not genrate any new data nor did I augment existing images.
-
 
 #### 2. Describe what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
 
@@ -100,7 +98,7 @@ I used the LeNet architecture as a basis for my model, but made a few changes. I
 
 #### 3. Describe how you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
 
-To train the model, I used an AdamOptimizer, a batch size of 80, and 15 epochs. The learning rate was 0.001. I found that a smaller batch size and a larger number of epochs yielded in better results, otherwise the training is pretty much identical to the training in the LeNet architecture.
+To train the model, I used an AdamOptimizer, a batch size of 80, and 15 epochs. The learning rate was 0.001. The hyperparameters `mu` and `sigma` used for `tf.truncated_normal()` in the model had values `mu=0` and `sigma=0.1`. I found that a smaller batch size and a larger number of epochs yielded in better results, otherwise the training is pretty much identical to the training in the LeNet architecture.
 
 #### 4. Describe the approach taken for finding a solution and getting the validation set accuracy to be at least 0.93. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
 
