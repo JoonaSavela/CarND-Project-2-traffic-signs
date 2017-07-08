@@ -23,11 +23,10 @@ The goals / steps of this project are the following:
 [image6]: ./my_german_traffic_signs/german-traffic-signs_3.png "Traffic Sign 3"
 [image7]: ./my_german_traffic_signs/german-traffic-signs_4.png "Traffic Sign 4"
 [image8]: ./my_german_traffic_signs/german-traffic-signs_5.png "Traffic Sign 5"
-[image9]: ./car_p2_preprocess.png "Preprocessing"
+[image9]: ./Right-of-way_at_the_next_intersection.jpg "Right-of-way at the next intersection"
 
 ## Rubric Points
 ### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/481/view) individually and describe how I addressed each point in my implementation.  
-
 ---
 ### Writeup / README
 
@@ -53,7 +52,7 @@ Here is an exploratory visualization of the data set. It is a normed bar chart s
 
 ![alt text][image1]
 
-As can be seen, the data is very unevenly divided, which will probably lead to some overfitting of the model.
+The actual label of a set of three bars is the tick on the x axis just before the bars. As can be seen, the data is very unevenly divided, which will probably lead to some overfitting of the model.
 
 ### Design and Test a Model Architecture
 
@@ -97,7 +96,7 @@ My final model consisted of the following layers:
 | Dropout  |   keep probability (training) 0.6   |
 | Fully connected	(output/logits)		| output 43       									|
  
-I used the LeNet architecture as a basis for my model, but made a few changes. I changed the Max pooling into average pooling, because there is some loss of information in Max pooling, and they both do essentially the same thing. I also altered some the dimensions of the original model, and added dropout in order to prevent overfitting.
+I used the LeNet architecture as a basis for my model, but made a few changes. I changed the max pooling into average pooling, because there is some loss of information in max pooling, and they both do essentially the same thing. I also altered some the dimensions of the original model, and added dropout in order to prevent overfitting.
 
 #### 3. Describe how you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
 
@@ -110,20 +109,11 @@ My final model results were:
 * validation set accuracy of 0.962
 * test set accuracy of 0.936
 
-If an iterative approach was chosen:
-* What was the first architecture that was tried and why was it chosen?
-* What were some problems with the initial architecture?
-* How was the architecture adjusted and why was it adjusted? Typical adjustments could include choosing a different model architecture, adding or taking away layers (pooling, dropout, convolution, etc), using an activation function or changing the activation function. One common justification for adjusting an architecture would be due to overfitting or underfitting. A high accuracy on the training set but low accuracy on the validation set indicates over fitting; a low accuracy on both sets indicates under fitting.
-* Which parameters were tuned? How were they adjusted and why?
-* What are some of the important design choices and why were they chosen? For example, why might a convolution layer work well with this problem? How might a dropout layer help with creating a successful model?
+I chose the LeNet architecture as the basis of my model, because it was said to be a good starting point for this project. Indeed, the architecture performed resonnably well even without any changes to the model.
 
-If a well known architecture was chosen:
-* What architecture was chosen?
-* Why did you believe it would be relevant to the traffic sign application?
-* How does the final model's accuracy on the training, validation and test set provide evidence that the model is working well?
+I started tuning the model by fine tuning the hyper parameters (such as learning rate, mu and sigma) of the LeNet architecture, but it turned out to be not very useful; the only parameters that were tuned were batch size and the number of epochs, as explained above.
 
-I chose the LeNet architecture as the basis of my model, because it was said to be a good starting point for this project.
- 
+From the original architeture, I changed max pools into average pools in order to conserve a little more information. I also changed the dimensions of the network, because it seemed to improve performance, and added dropout before the output layer in order to avoid overfitting.
 
 ### Test a Model on New Images
 
@@ -134,7 +124,7 @@ Here are five German traffic signs that I found on the web:
 ![alt text][image4] ![alt text][image5] ![alt text][image6] 
 ![alt text][image7] ![alt text][image8]
 
-The first and the second images might be difficult to classify because of the peculiar lighting conditions on the images. The third image might be difficult because it's quite tilted to the left. The fourth is probably the easiest to classify, thanks to preprocessing of the images, but is still somewhat unclear and too much lit. The fifth and final image might be difficult to classify because it's partly covered by an obstacle, and because it's poorly represented in the training data, as seen from the bar chart above (pedestrians, label 27).
+The first and the second images might be difficult to classify because of the peculiar lighting conditions on the images. The second image is also poorly represented in the training data, as seen from the bar chart above (label 19), which makes it even more difficult to classify, probably the hardest one of these five images. The third image might be difficult because it's quite tilted to the left. The fourth is probably the easiest to classify, thanks to preprocessing of the images, but is still somewhat unclear and too lit. The fifth and final image might be difficult to classify because it's partly covered by an obstacle, and because it's poorly represented in the training data, as seen from the bar chart above (label 27).
 
 #### 2. Discuss the model's predictions on these new traffic signs and compare the results to predicting on the test set. At a minimum, discuss what the predictions were, the accuracy on these new predictions, and compare the accuracy to the accuracy on the test set (OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
 
@@ -149,24 +139,67 @@ Here are the results of the prediction:
 | Pedestrians			| Pedestrians      							|
 
 
-The model was able to correctly guess all of the 5 traffic signs, which gives an accuracy of 100%. This compares favorably to the accuracy on the test set of ...
+The model was able to correctly guess all of the 5 traffic signs (to my surprise), which gives an accuracy of 100%. It hence beats the accuracy of 93.6% of the test set, but since there are only 5 completely new images, these two cannot be compared that well. What can be said, however, is that the model performed similarly well in both cases.
 
 #### 3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
 
-The code for making predictions on my final model is located in the 11th cell of the Ipython notebook.
+The model is extremely confident that its first option is the correct one: the confidence is over 99% in all 5 cases. Indeed, all of these predictions are correct. The model is least confident on the last image (pedestrians), with a confidence of 0.9904. This is because of the small amount of training data of that image (see, again, the bar chart), but also because the traffic sign "Right-of-way at the next intersection", which is more frequent in the training data, is quite similar to the "Pedestrians" sign. Here is an image from the web of that traffic sign:
 
-For the first image, the model is relatively sure that this is a stop sign (probability of 0.6), and the image does contain a stop sign. The top five soft max probabilities were
+![alt text][image9]
+
+The model has a confidence of almost 1% on this traffic sign on the fifth image.
+
+The softmax probabilities for the first image:
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| .60         			| Stop sign   									| 
-| .20     				| U-turn 										|
-| .05					| Yield											|
-| .04	      			| Bumpy Road					 				|
-| .01				    | Slippery Road      							|
+| ~1.0         			| Speed limit (30 km/h)  									| 
+| 1.6e-8     				| Speed limit (50 km/h)										|
+| 1.9e-9					| Wild animals crossing											|
+| 1.1e-10      			| Speed limit (20 km/h)					 				|
+| 3.4e-11				    | Speed limit (80 km/h)      							|
+
+The softmax probabilities for the second image:
+
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| 0.9995        			| Dangerous curve to the left   									| 
+| 3.6e-4     				| Bicycles crossing 										|
+| 1.2e-4				| Double curve											|
+| 1.6e-5	      			| Wild animals crossing					 				|
+| 9.7e-6				    | Slippery Road      							|
+
+The softmax probabilities for the third image:
+
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| 0.999991         			| Road Work   									| 
+| 9.1e-4     				| Bicycles crossing 										|
+| 3.5e-8					| Bumpy road											|
+| 1.2e-8	      			| Wild animals crossing					 				|
+| 5.8e-9				    |  Road narrows on the right     							|
+
+The softmax probabilities for the fourth image:
+
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| 0.99997         			| Traffic signals   									| 
+| 1.4e-5     				| Dangerous curve to the right 										|
+| 1.3e-5					| General caution									|
+| 7.3e-7	      			| Pedestrians					 				|
+| 2.8e-8				    | Road narrows on the right     							|
+
+The softmax probabilities for the fifth image:
+
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| 0.9904         			| Pedestrians	   									| 
+| 9.2e-3     				| Right-of-way at the next intersection 										|
+| 3.7e-4   					| General caution								|
+| 6.8e-6      			| Road narrows on the right					 				|
+| 1.8e-6				    | Traffic signals     							|
 
 
-For the second image ... 
 
 ### (Optional) Visualizing the Neural Network (See Step 4 of the Ipython notebook for more details)
 #### 1. Discuss the visual output of your trained network's feature maps. What characteristics did the neural network use to make classifications?
